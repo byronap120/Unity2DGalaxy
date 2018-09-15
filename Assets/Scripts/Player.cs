@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class Player : MonoBehaviour
 {
@@ -69,4 +70,17 @@ public class Player : MonoBehaviour
         }
 
     }
+
+    public void EnableTripeShoot()
+    {
+        canTripleShoot = true;
+        StartCoroutine(TripeShootPowerUpTimer());
+    }
+
+    private IEnumerator TripeShootPowerUpTimer()
+    {
+        yield return new WaitForSeconds(5.0f);
+        canTripleShoot = false;
+    }
+
 }
