@@ -5,7 +5,7 @@ public class Player : MonoBehaviour
 {
     public bool canTripleShoot = false;
 
-    [SerializeField] private float _speed = 1f;
+    [SerializeField] private float _speed = 5f;
     [SerializeField] private GameObject _laserPrefab;
     [SerializeField] private float _fireRate = 0.25F;
     private float _nextFire = 0.0F;
@@ -82,5 +82,18 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(5.0f);
         canTripleShoot = false;
     }
+
+    public void EnableSpeedBost()
+    {
+        _speed = 10f;
+        StartCoroutine(SppedBoostTimer());
+    }
+
+    private IEnumerator SppedBoostTimer()
+    {
+        yield return new WaitForSeconds(5.0f);
+        _speed = 5f;
+    }
+
 
 }
