@@ -17,7 +17,6 @@ public class EnemyAI : MonoBehaviour
     void Update()
     {
         transform.Translate(Vector3.down * _speed * Time.deltaTime);
-
         VerifyEnemyPosition();
     }
 
@@ -27,6 +26,22 @@ public class EnemyAI : MonoBehaviour
         {
             float xPosition = Random.Range(-9.20f, 9.25f);
             transform.position = new Vector3(xPosition, 8.15f, 0);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D otherGameObject)
+    {
+
+        Debug.Log(otherGameObject.tag);
+        if (otherGameObject.tag == "Player")
+        {
+            Player player = otherGameObject.GetComponent<Player>();
+            player.TakeDamage();
+            Destroy(this.gameObject);
+        } else if (otherGameObject.tag == "Laser")
+        {
+            Destroy(otherGameObject.gameObject);
+            Destroy(this.gameObject);
         }
     }
 }

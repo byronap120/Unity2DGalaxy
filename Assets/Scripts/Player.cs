@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float _speed = 5f;
     [SerializeField] private GameObject _laserPrefab;
     [SerializeField] private float _fireRate = 0.25F;
+    [SerializeField] private int _playerLives = 3;
     private float _nextFire = 0.0F;
 
     // Use this for initialization
@@ -79,7 +80,7 @@ public class Player : MonoBehaviour
 
     private IEnumerator TripeShootPowerUpTimer()
     {
-        yield return new WaitForSeconds(5.0f);
+        yield return new WaitForSeconds(10.0f);
         canTripleShoot = false;
     }
 
@@ -93,6 +94,15 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(5.0f);
         _speed = 5f;
+    }
+
+    public void TakeDamage()
+    {
+        _playerLives--;
+        if(_playerLives < 1)
+        {
+            Destroy(this.gameObject);
+        }
     }
 
 
