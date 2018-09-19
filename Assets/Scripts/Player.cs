@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
 
     [SerializeField] private float _speed = 5f;
     [SerializeField] private GameObject _laserPrefab;
+    [SerializeField] private GameObject _tripeLaserPrefab;
     [SerializeField] private float _fireRate = 0.25F;
     [SerializeField] private int _playerLives = 3;
     [SerializeField] private GameObject _playerExplosion;
@@ -65,12 +66,14 @@ public class Player : MonoBehaviour
         if (Time.time > _nextFire)
         {
             _nextFire = Time.time + _fireRate;
-            Instantiate(_laserPrefab, transform.position + new Vector3(0, 0.95f, 0), Quaternion.identity);
 
             if (canTripleShoot)
             {
-                Instantiate(_laserPrefab, transform.position + new Vector3(-0.6f, 0.3f, 0), Quaternion.identity);
-                Instantiate(_laserPrefab, transform.position + new Vector3(0.6f, 0.3f, 0), Quaternion.identity);
+                Instantiate(_tripeLaserPrefab, transform.position + new Vector3(0, 0f, 0), Quaternion.identity);
+            }
+            else
+            {
+                Instantiate(_laserPrefab, transform.position + new Vector3(0, 0.95f, 0), Quaternion.identity);
             }
         }
 

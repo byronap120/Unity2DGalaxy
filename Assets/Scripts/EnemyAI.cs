@@ -30,7 +30,6 @@ public class EnemyAI : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D otherGameObject)
     {
-        Debug.Log(otherGameObject.tag);
         if (otherGameObject.tag == "Player")
         {
             Player player = otherGameObject.GetComponent<Player>();
