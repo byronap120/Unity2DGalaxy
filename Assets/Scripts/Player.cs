@@ -4,11 +4,15 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public bool canTripleShoot = false;
+    private bool _playerShield = false;
 
     [SerializeField] private float _speed = 5f;
     [SerializeField] private GameObject _laserPrefab;
     [SerializeField] private float _fireRate = 0.25F;
     [SerializeField] private int _playerLives = 3;
+    [SerializeField] private GameObject _playerExplosion;
+    [SerializeField] private GameObject _shieldSprite;
+
     private float _nextFire = 0.0F;
 
     // Use this for initialization
@@ -72,6 +76,25 @@ public class Player : MonoBehaviour
 
     }
 
+    public void EnableShield()
+    {
+        _playerShield = true;
+        _shieldSprite.SetActive(true);
+        StartCoroutine(ShieldTimer());
+    }
+
+    public void DisableShield()
+    {
+        _playerShield = false;
+        _shieldSprite.SetActive(false);
+    }
+
+    private IEnumerator ShieldTimer()
+    {
+        yield return new WaitForSeconds(10.0f);
+        DisableShield();
+    }
+
     public void EnableTripeShoot()
     {
         canTripleShoot = true;
@@ -98,12 +121,18 @@ public class Player : MonoBehaviour
 
     public void TakeDamage()
     {
-        _playerLives--;
-        if(_playerLives < 1)
+        if (_playerShield)
         {
+            DisableShield();
+            return;
+        }
+
+        _playerLives--;
+        if (_playerLives < 1)
+        {
+            Instantiate(_playerExplosion, transform.position, Quaternion.identity);
             Destroy(this.gameObject);
         }
+
     }
-
-
 }

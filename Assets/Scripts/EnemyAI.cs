@@ -1,11 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class EnemyAI : MonoBehaviour
 {
 
     [SerializeField] float _speed = 2.0f;
+    [SerializeField] GameObject enemyExplosion;
 
     // Use this for initialization
     void Start()
@@ -31,17 +30,20 @@ public class EnemyAI : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D otherGameObject)
     {
-
         Debug.Log(otherGameObject.tag);
         if (otherGameObject.tag == "Player")
         {
             Player player = otherGameObject.GetComponent<Player>();
             player.TakeDamage();
             Destroy(this.gameObject);
+            Instantiate(enemyExplosion, this.gameObject.transform.position, Quaternion.identity);
+            
         } else if (otherGameObject.tag == "Laser")
         {
             Destroy(otherGameObject.gameObject);
             Destroy(this.gameObject);
+            Instantiate(enemyExplosion, this.gameObject.transform.position, Quaternion.identity);
+            
         }
     }
 }
