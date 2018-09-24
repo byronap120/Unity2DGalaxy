@@ -5,11 +5,12 @@ public class EnemyAI : MonoBehaviour
 
     [SerializeField] float _speed = 2.0f;
     [SerializeField] GameObject enemyExplosion;
+    private UIManager _uiManager;
 
     // Use this for initialization
     void Start()
     {
-
+        _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
     }
 
     // Update is called once per frame
@@ -34,15 +35,25 @@ public class EnemyAI : MonoBehaviour
         {
             Player player = otherGameObject.GetComponent<Player>();
             player.TakeDamage();
-            Destroy(this.gameObject);
             Instantiate(enemyExplosion, this.gameObject.transform.position, Quaternion.identity);
-            
-        } else if (otherGameObject.tag == "Laser")
+            Destroy(this.gameObject);
+
+        }
+        else if (otherGameObject.tag == "Laser")
         {
             Destroy(otherGameObject.gameObject);
-            Destroy(this.gameObject);
             Instantiate(enemyExplosion, this.gameObject.transform.position, Quaternion.identity);
-            
+            updateScore();
+            Destroy(this.gameObject);
+
+        }
+    }
+
+    private void updateScore()
+    {
+        if (_uiManager != null)
+        {
+            _uiManager.UpdateScore();
         }
     }
 }

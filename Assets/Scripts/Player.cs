@@ -4,7 +4,6 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public bool canTripleShoot = false;
-    private bool _playerShield = false;
 
     [SerializeField] private float _speed = 5f;
     [SerializeField] private GameObject _laserPrefab;
@@ -13,13 +12,18 @@ public class Player : MonoBehaviour
     [SerializeField] private int _playerLives = 3;
     [SerializeField] private GameObject _playerExplosion;
     [SerializeField] private GameObject _shieldSprite;
-
     private float _nextFire = 0.0F;
+    private bool _playerShield = false;
+    private UIManager _uiManager;
 
     // Use this for initialization
     void Start()
     {
-
+        _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+        if (_uiManager)
+        {
+            _uiManager.UpdateLives(_playerLives);
+        }
     }
 
     // Update is called once per frame
@@ -124,6 +128,8 @@ public class Player : MonoBehaviour
 
     public void TakeDamage()
     {
+
+        // Verify active shield
         if (_playerShield)
         {
             DisableShield();
@@ -131,10 +137,20 @@ public class Player : MonoBehaviour
         }
 
         _playerLives--;
+
+        // update the sprite on the UIManger canvas
+        _uiManager.UpdateLives(_playerLives);
+
         if (_playerLives < 1)
         {
             Instantiate(_playerExplosion, transform.position, Quaternion.identity);
             Destroy(this.gameObject);
+
+            GameManager gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+            if (gameManager != null)
+            {
+                gameManager.gameOverGalaxyGame();
+            }
         }
 
     }
